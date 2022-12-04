@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+  {% load static %}
+  {% include 'includes/header.html' %}
+
+<body class="hold-transition sidebar-mini layout-fixed">
+   
+<div class="wrapper">
+  <!-- Preloader -->
+  <div style="background-image: linear-gradient(180deg, #fad66a, #0d6efd );" class="preloader flex-column justify-content-center align-items-center">
+    <img class="animation__shake" id="logo_shake" src="{% static 'assets/img/logo.png' %}" alt="CAMPOST MANAGER" height="160" width="160">
+  </div>
+
+  <!-- Navbar -->
+  <nav class="main-header navbar navbar-expand navbar-white navbar-light">
+    <!-- Left navbar links -->
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" role="button"><b>{{ user.username }}</b> vous êtes connecté(e) en tant que <b>{{ user.profil.role.nom}}</b></a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#"> AGENCE : <span class="badge badge-warning">{{ user.profil.agence.nom }}</span> </a>
+      </li>
+    </ul>
+
+    <!-- Right navbar links -->
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+        <p>
+            <span>CAMPOST</span>
+        </p>
+      </li>
+    </ul>
+  </nav>
+  <!-- /.navbar -->
+
+  <!-- Main Sidebar Container -->
+  <aside class="main-sidebar sidebar-dark-primary elevation-1">
+    <!-- Brand Logo -->
+    <img style="max-width: 100%; margin:0 50px; margin-top: 17px; max-height: 100px;" src="{% static 'assets/img/logo.png' %}" class="brand-image elevation-0" alt="">
+
+      <!-- Sidebar Menu -->
+      <nav class="mt-2">
+        <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+
+          <li class="nav-item">
+            <a href="/agent/dashboard" class="nav-link">
+              <i class="nav-icon fas fa-chart-pie"></i>
+              <p>
+                ACCUEIL
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/agent/transactions" class="nav-link">
+              <i class="nav-icon fa fa-coins"></i>
+              <p>
+                TRANSACTIONS
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="/deconnexion" class="nav-link">
+              <i class="nav-icon fas fa-arrow-left"></i>
+              <p>
+                DECONNEXION
+              </p>
+            </a>
+          </li>
+
+        </ul>
+      </nav>
+      <!-- /.sidebar-menu -->
+    </div>
+    <!-- /.sidebar -->
+  </aside>
+
+  <!-- Content Wrapper. Contains page content -->
+  <div style="background: rgba(255, 255, 255, 0.726)" class="content-wrapper">
+
+
+    <!-- Main content -->
+    <section class="content" style="">
+        <div class="container-fluid mt-0">
+          {% block header%}  {% endblock header%}
+        </div>
+       {% block content%}  {% endblock content%}
+    </section>
+    <!-- /.content -->
+  </div>
+  <footer class="main-footer">
+    <h5 class="font-size-18 font-bold" style="font-weight: 700"><span class="text-primary">CAMPOST</span> <span style="background: #FFFFFF; padding:5px 10px; color:#333333" class="">GESTION DES COMPTES CLIENTS</span> </h5>
+  </footer>
+  <!-- /.content-wrapper -->
+  <script src="{% static 'assets/js/jquery.js' %}"></script>
+<script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/popper.js' %}"></script>
+<script src="{% static 'assets/js/adminlte.js' %}"></script> 
+
+
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script>
+$('.data-table').DataTable({
+    "paging": true,
+    language: {
+      processing:     "Traitement en cours...",
+      search:         "Rechercher&nbsp;:",
+      lengthMenu:    "Afficher _MENU_ &eacute;l&eacute;ments",
+      info:           "Affichage de l'&eacute;lement _START_ &agrave; _END_ sur _TOTAL_ &eacute;l&eacute;ments",
+      infoEmpty:      "Affichage de l'&eacute;lement 0 &agrave; 0 sur 0 &eacute;l&eacute;ments",
+      infoFiltered:   "(filtr&eacute; de _MAX_ &eacute;l&eacute;ments au total)",
+      infoPostFix:    "",
+      loadingRecords: "Chargement en cours...",
+      zeroRecords:    "Aucun &eacute;l&eacute;ment &agrave; afficher",
+      emptyTable:     "Aucune donnée disponible dans le tableau",
+      paginate: {
+          first:      "Premier",
+          previous:   "Pr&eacute;c&eacute;dent",
+          next:       "Suivant",
+          last:       "Dernier"
+      },
+      aria: {
+          sortAscending:  ": activer pour trier la colonne par ordre croissant",
+          sortDescending: ": activer pour trier la colonne par ordre décroissant"
+      }
+  },
+    "lengthChange": true,
+    "searching": true,
+    "ordering": true,
+    "info": true,
+    "autoWidth": false,
+    "responsive": true,
+  });
+</script>
+
+</body>
+</html>

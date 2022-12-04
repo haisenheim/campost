@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Page  d'identification</title>
+    <link rel="stylesheet" href=" {% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'assets/css/styleconnex.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center alert alert alert-primary";>IDENTIFICATION</h2>
+    </div>
+    <div>
+        <form class="form form-control-sm">
+            <div class="mb-3">
+              <label for="exampleInputText" class="form-label">Identifiant</label>
+              <input type="text" class="form-control" id="exampleInputText" placeholder="Saisissez votre identifiant" >
+              <!--<label for="InputInvalid">Identifiant invalide</label>-->
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Mot de passe</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Saisissez votre mot de passe">
+                <!--<label for="InputInvalid">Mot de passe invalide</label>-->
+            </div>
+            <!--<div class="input-group mb-3">
+                <label for="exampleInputEmail1" class="form-label">Adresse de recuperation</label>
+                <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+            </div> -->  
+            
+            <div>
+                <label for="exampleDataList" class="form-label">Statut</label>
+                <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Selectionnez votre statut">
+                <datalist id="datalistOptions">
+                    <option value="RECEVEUR"></option>
+                    <option value="AGENT"></option>
+                </datalist>
+            </div>
+            <div id="textHelp" class="form-text">Vous ne devez jamais partager vos identifiants</div>
+            <div><button type="submit" class="btn btn-primary">Envoyer</button></div>
+        </form>
+    
+      
+    <div></div>
+    <div></div>
+    <div></div>
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/js/popper.js' %}"></script> 
+</body>
+</html>

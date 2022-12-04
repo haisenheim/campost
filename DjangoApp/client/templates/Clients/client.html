@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GESTION CLIENTS</title>
+    <link rel="stylesheet" href=" {% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href=" {% static 'assets/css/adminlte.css' %}">
+    <link rel="stylesheet" href=" {% static 'assets/css/style.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        {% block header%}  {% endblock header%}
+        {% block content%}  {% endblock content%}
+    </div>
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'assets/js/popper.js' %}"></script> 
+   
+
+<script src="{% static 'plugins/datatables/jquery.dataTables.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-bs4/js/dataTables.bootstrap4.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/dataTables.responsive.min.js' %}"></script>
+<script src="{% static 'plugins/datatables-responsive/js/responsive.bootstrap4.min.js' %}"></script>
+<script>
+    $('.data-table').DataTable({
+        "paging": true,
+        "lengthChange": true,
+        "searching": true,
+        "ordering": true,
+        "info": true,
+        "autoWidth": false,
+        "responsive": true,
+      });
+</script>
+</body>
+</html>

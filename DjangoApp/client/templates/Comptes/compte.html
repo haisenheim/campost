@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GESTION COMPTES</title>
+    <link rel="stylesheet" href=" {% static 'assets/css/bootstrap.css' %}">
+    <link rel="stylesheet" href=" {% static 'assets/css/stylecompte.css' %}">
+</head>
+<body>
+    <div class="container mt-5">
+        <h2 class="text-center alert alert-primary">GESTION COMPTES</h2>
+        {% block content%}  {% endblock content%}
+    </div>
+    <script src="{% static 'assets/js/jquery.js' %}"></script>
+    <script src="{% static 'assets/js/bootstrap.js' %}"></script>
+    <script src="{% static 'assets/js/popper.js' %}"></script> 
+</body>
+</html>

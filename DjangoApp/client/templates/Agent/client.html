@@ -1,0 +1,141 @@
+{% extends 'layouts/agent.html' %}
+{% block header %}
+      <div class="p-3 mb-2 bg-light">
+         <h3 class="text-center">{{ client }}</h3>
+      </div>     
+{% endblock header %}
+{% block content %}
+  <div class="container">
+      <div class="row">
+            <div class="col-md-4 col-sm-12">
+              <div class="card">
+                <div class="card-body">
+                  <h4 class="text-center alert alert alert-info ">{{ client }} </h4>
+                  <p>NOM : <span class="text-bold">{{ client.nom }}</span></p>
+                  <p>PRENOM : <span class="text-bold">{{ client.prenom }}</span></p>
+                  <p>TELEPHONE : <span class="text-bold">{{ client.telephone }}</span></p>
+                  <p>ADRESSE PHYSIQUE : <span class="text-bold">{{ client.adresse }}</span></p>
+                  <p>DATE DE NAISSANCE : <span class="text-bold">{{client.dtn|date:"d-m-Y" }}</span></p>
+                  <p>NUMERO DE COMPTE : <span class="text-bold">{{ client.compte.numero }}</span> </p>
+                  <p>SOLDE DU COMPTE : <span class="text-bold">{{ client.compte.solde }}</span> </p>
+                </div>  
+              </div>   
+            </div>
+            <div class="col-md-8 col-sm-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="container">
+                      <div class="pull-right">
+                        <div class="form-group">
+                          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions </button>
+                          <ul class="dropdown-menu" style="">
+                            <li><a class="dropdown-item" data-target="#retraitModal" data-toggle="modal" href="#">Effectuer retrait</a></li>
+                            <li><a class="dropdown-item" data-target="#depotModal" data-toggle="modal" href="#">Effectuer depot</a></li>
+                          </ul>
+                        </div>
+                        
+                      </div>
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      
+
+                <table class="table table-hover table-bordered table-sm table-striped data-table">
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">DATE</th>
+                        
+                        <th>TYPE</th>
+                        <th>MONTANT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for st in client.operation_set.all %}
+                          <tr>
+                            <td><a href="#" class="">{{st.created_at|date:"d-m-Y H:i"}}</a></td>
+                            
+                            {% if st.is_deposit %}
+                              <td><span class="badge badge-success">depot<i class="fa fa-upload" ></i></span></td>
+                            {% else %}
+                            <td><span class="badge badge-danger">retrait<i class="fa fa-download" ></i></span></td>
+                            {% endif %}
+                            <td>{{ st.montant }}</td>
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>  
+                  </div>  
+                </div>  
+            </div>
+        </div>
+  </div>
+
+  <div id="retraitModal" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h6>NOUVEAU RETRAIT</h6>
+            </div>
+            <div class="modal-body">
+              <form class="" action="/agent/retrait" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="numero" value="{{ client.compte.numero }}">
+                <div class="form-group">
+                  <label for="">Montant : </label>
+                  <input type="number" required name="montant" placeholder="Saisir le montant" class="form-control p-1">
+                </div>
+                <div class="form-group p-1">
+                  <button class="btn btn-sm btn-primary" type="submit">Charger</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>  
+
+
+<div id="depotModal" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+              <h6>NOUVEAU DEPOT</h6>
+            </div>
+            <div class="modal-body">
+              <form class="" action="/agent/depot" method="post">
+                {% csrf_token %}
+                <input type="hidden" name="numero" value="{{ client.compte.numero }}">
+                <div class="form-group">
+                  <label for="">Montant : </label>
+                  <input type="number" required name="montant" placeholder="Saisir le montant" class="form-control p-1">
+                </div>
+                <div class="form-group p-1">
+                  <button class="btn btn-sm btn-primary" type="submit">Charger</button>
+                </div>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+  <style>
+    fieldset{
+      padding: 15px;
+      border: 1px #b9b9b9 solid;
+      border-radius: 5px;
+      margin: 10px 0;
+  }
+  
+  legend{
+      font-weight: 700;
+      font-size: 11px;
+      font-family: "segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      padding: 5px;
+      width: auto;
+  }
+  </style>
+  {% endblock content %}

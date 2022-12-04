@@ -1,0 +1,69 @@
+{% extends 'layouts/admin.html' %}
+{% block header %}
+      <div class="p-3 mb-2 bg-light">
+         <h3 class="text-center">GESTION DES COMPTES CLIENTS</h3>
+      </div>     
+{% endblock header %}
+{% block content %}
+  <div class="container">
+      <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="card">
+                  
+                  <div class="card-body">
+                    <div class="table-responsive">
+                      
+
+                <table class="table table-hover table-bordered table-sm table-striped data-table">
+                    <thead>
+                      <tr>
+                        
+                        <th scope="col">COMPTE</th>
+                        <th>SOLDE</th>
+                        <th>CLIENT</th>
+                        <th>TELEPHONE</th>
+                        <th>STATUT</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                        {% for st in clients %}
+                          <tr>
+                            <td><a href="/super/client/show/{{st.id}}" class="">{{st.compte}}</a></td>
+                           
+                            <td>{{st.compte.solde}}</td>
+                            <td>{{st}}</td>
+                            <td>{{st.telephone}}</td>
+                            {% if st.compte.is_active %}
+                              <td><span class="badge badge-success">Actif</span></td>
+                            {% else %}
+                            <td><span class="badge badge-danger">bloque</span></td>
+                            {% endif %}
+                          </tr>
+                          {% endfor %}
+                          
+                        </tbody>
+                      </table>
+                    </div>  
+                  </div>  
+                </div>  
+            </div>
+        </div>
+  </div>
+  <style>
+    fieldset{
+      padding: 15px;
+      border: 1px #b9b9b9 solid;
+      border-radius: 5px;
+      margin: 10px 0;
+  }
+  
+  legend{
+      font-weight: 700;
+      font-size: 11px;
+      font-family: "segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+      color: #000000;
+      padding: 5px;
+      width: auto;
+  }
+  </style>
+  {% endblock content %}

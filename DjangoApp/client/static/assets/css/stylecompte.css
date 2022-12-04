@@ -1,0 +1,10 @@
+*, ::before, ::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+body{
+    height: 100vh;
+    background-image: linear-gradient(135deg, transparent 0%, transparent 9%,rgba(159, 210, 238, 0.6) 9%, rgba(168, 204, 238, 0.6) 51%,transparent 51%, transparent 57%,rgba(188, 245, 238, 0.6) 57%, rgba(144, 240, 241, 0.6) 100%),linear-gradient(45deg, transparent 0%, transparent 12%,rgb(171, 217, 242) 12%, rgb(173, 216, 239) 33%,rgb(141, 148, 247) 33%, rgb(134, 140, 230) 45%,transparent 45%, transparent 100%),linear-gradient(90deg, rgb(249, 228, 228),rgb(243, 236, 111));
+}
+ 

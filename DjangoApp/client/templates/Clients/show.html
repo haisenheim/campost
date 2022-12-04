@@ -1,0 +1,54 @@
+{% extends 'Clients/client.html' %}
+{% block header %}
+<h2 class="text-center bg-light">{{ client }}</h2>
+  <div class="bg-info p-2 mb-2"><a href="/client">Retourner a la liste des client</a></div>
+{% endblock header %}
+{% block content %}
+<div class="row">
+    <div class="col-md-4 col-sm-12">
+      <div class="card">
+        <div class="card-body">
+          <h4 class="text-center alert alert alert-info ">{{ client }} </h4>
+          <p>NOM : <span class="text-bold">{{ client.nom }}</span></p>
+          <p>PRENOM : <span class="text-bold">{{ client.prenom }}</span></p>
+          <p>TELEPHONE : <span class="text-bold">{{ client.telephone }}</span></p>
+          <p>ADRESSE PHYSIQUE : <span class="text-bold">{{ client.adresse }}</span></p>
+          <p>DATE DE NAISSANCE : <span class="text-bold">{{client.dtn|date:"d-m-Y" }}</span></p>
+        </div>  
+      </div>    
+    </div>
+    <div class="col-md-8 col-sm-12">
+        <div class="card">
+          <div class="card-header"><h4 class="text-center">HISTORIQUE DES TRANSACTIONS</h4></div>
+          <div class="card-body">
+            <div class="table-responsive">
+              
+        {% if True %}
+        <table class="table table-hover table-bordered table-sm table-striped data-table">
+            <thead>
+              <tr>
+                
+                <th scope="col">NUMERO DE COMPTE</th>
+                <th> SOLDE </th>
+              </tr>
+            </thead>
+            <tbody>
+                {% for compte in client.compte_set.all %}
+                  <tr>
+                    <td><a href="/client/compte/show/{{st.id}}" class="">{{compte.numero}}</a></td>
+                    <td>{{compte.solde}}</td>
+                    
+                  </tr>
+                  {% endfor %}
+                  
+                </tbody>
+              </table>
+            {% else %}
+            <h4 class="text-center alert alert-warning">AUCUNE OPERATION</h4>
+            {% endif %}
+            </div>  
+          </div>  
+        </div>  
+    </div>
+</div>
+{% endblock content %}
