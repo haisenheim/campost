@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from . import views
+from moneysys import views
 from django.conf import settings
 from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('__debug__/', include('debug_toolbar.urls')),
+    #path('__debug__/', include('debug_toolbar.urls')),
     path('admin/', admin.site.urls),
     path('', views.home),
     path('connexion/', views.connexion),
@@ -30,10 +30,10 @@ urlpatterns = [
     #path('',views.add_show, name = "addandshow"),
     path('client/',views.traiter_client, name = "edit"),
     #path('',views.traiter_compte, name = "edite"),
-    path('login/', views.login_user),
-    path('deconnexion/', views.deconnexion),
-    path('delete/<int:id>/',views.delete_data, name = "deletedata"),
-    path('client/show/<int:id>/',views.show_client, name = "show_client"),
+    path('login', views.login_user),
+    path('deconnexion', views.deconnexion),
+    path('delete/<int:id>',views.delete_data, name = "deletedata"),
+    path('client/show/<int:id>',views.show_client, name = "show_client"),
     
     
     # Les liens de l'administrateur
