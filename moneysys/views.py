@@ -307,7 +307,7 @@ def agent_depot(request):
         numero = form.data.get("numero")
         compte = Compte.objects.get(numero=numero)
         current_user = request.user
-        if current_user.profil.id==3:
+        if current_user.profil.role.id==3:
             print("profil role id :", current_user.profil.role.id)
             return HttpResponse(f"Inside le if :  Le numero {numero} - le user {current_user.profil.role.id}")
             now = datetime.datetime.now()
@@ -319,7 +319,7 @@ def agent_depot(request):
             return redirect('/agent/transactions')
         else: 
             print("outside profil role id :", current_user.profil.role.id)
-            return HttpResponse(f"Outside le if :  Le numero {numero} - le user {current_user.profil.role.id}")   
+            return HttpResponse(f"Outside le if :  Le numero {numero} - le user {current_user.profil.role.id == 3}")   
             return redirect('/login')   
         
 def agent_retrait(request):
