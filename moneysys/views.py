@@ -6,6 +6,8 @@ from django.http import HttpResponse
 from django.contrib.auth import authenticate, login,logout
 from django.urls import reverse
 import datetime
+from faker import Faker
+import random
 
 #ClientRegistration,
 #User,
@@ -279,7 +281,9 @@ def agent_create_client(request):
             current_user = request.user
             agence = current_user.profil.agence
             now = datetime.datetime.now()
-            numero = '{}{}{}'.format(now.strftime('%H%d%m%y'),agence.id,current_user.id)
+            faker = Faker()
+            #numero = faker.unique
+            numero = '{}{}{}'.format(now.strftime('%H%w%W%y%M%S'), f'{current_user.id:03}',random.randint(0, 9))
             client = Client.objects.create(nom=nom,prenom=prenom,telephone=telephone,adresse=adresse,dtn=dtn,lieu=lieu,photo=photo,user=current_user,agence=agence)
             compte = Compte.objects.create(client=client,solde=0,numero=numero)
             return render(request, 'Agent/client.html',{'client':client})
