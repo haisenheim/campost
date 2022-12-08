@@ -308,13 +308,18 @@ def agent_depot(request):
         compte = Compte.objects.get(numero=numero)
         current_user = request.user
         if current_user.profil.id==3:
+            print("profil role id :", current_user.profil.role.id)
+            return HttpResponse(f"Inside le if :  Le numero {numero} - le user {current_user.profil.role.id}")
             now = datetime.datetime.now()
             num = '{}{}{}'.format(now.strftime('%H%d%m%y'),current_user.profil.agence.id,current_user.id)
-            transaction = Operation.objects.create(montant=montant,compte=compte,client=compte.client,user=current_user,agence=current_user.profil.agence,region=current_user.profil.agence.region,autorisation=num)
+            Operation.objects.create(montant=montant,compte=compte,client=compte.client,user=current_user,agence=current_user.profil.agence,region=current_user.profil.agence.region,autorisation=num)
+            
             compte.solde = compte.solde + int(montant)
             compte.save()
             return redirect('/agent/transactions')
-        else:    
+        else: 
+            print("outside profil role id :", current_user.profil.role.id)
+            return HttpResponse(f"Outside le if :  Le numero {numero} - le user {current_user.profil.role.id}")   
             return redirect('/login')   
         
 def agent_retrait(request):
