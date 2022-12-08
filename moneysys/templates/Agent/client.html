@@ -81,7 +81,7 @@
               <h6>NOUVEAU RETRAIT</h6>
             </div>
             <div class="modal-body">
-              <form class="" action="/agent/retrait" method="post">
+              <form class="" action="agent/retrait" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="numero" value="{{ client.compte.numero }}">
                 <div class="form-group">
@@ -105,7 +105,7 @@
               <h6>NOUVEAU DEPOT</h6>
             </div>
             <div class="modal-body">
-              <form class="" action="/agent/depot" method="post">
+              <form class="" action="agent/depot" method="post">
                 {% csrf_token %}
                 <input type="hidden" name="numero" value="{{ client.compte.numero }}">
                 <div class="form-group">
