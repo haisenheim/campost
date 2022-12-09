@@ -165,7 +165,7 @@ def admin_dashboard(request):
    #                           created_at__year__lte=year,
     #                          created_at__month__lte=month)
     if current_user.profil.role.id==1:
-        return render(request, 'Admin/dashboard.html',{'clients':nb_clients,'agents':nb_agents,'mr':f'{mt_retraits:,}','md':f'{mt_depots:,}','nb_r':nb_retraits,'nb_d':nb_depots,'pr':pr,'pd':pd})
+        return render(request, 'Admin/dashboard.html',{'clients':nb_clients,'agents':nb_agents,'mr':f'{mt_retraits:.}','md':f'{mt_depots:.}','nb_r':nb_retraits,'nb_d':nb_depots,'pr':pr,'pd':pd})
     else:    
         return redirect('/login')
     
