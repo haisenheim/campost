@@ -8,6 +8,7 @@ from django.urls import reverse
 import datetime
 from faker import Faker
 import random
+import locale
 
 #ClientRegistration,
 #User,
@@ -135,6 +136,7 @@ def deconnexion(request):
 
 def admin_dashboard(request):
     #return redirect('/some/url/')
+    locale.setlocale(locale.LC_ALL, '')
     user = current_user = request.user
     now = datetime.datetime.now()
     year = now.strftime('%Y')
@@ -165,7 +167,7 @@ def admin_dashboard(request):
    #                           created_at__year__lte=year,
     #                          created_at__month__lte=month)
     if current_user.profil.role.id==1:
-        return render(request, 'Admin/dashboard.html',{'clients':nb_clients,'agents':nb_agents,'mr':f'{mt_retraits:.}','md':f'{mt_depots:.}','nb_r':nb_retraits,'nb_d':nb_depots,'pr':pr,'pd':pd})
+        return render(request, 'Admin/dashboard.html',{'clients':nb_clients,'agents':nb_agents,'mr':f'{mt_retraits:n}','md':f'{mt_depots:n}','nb_r':nb_retraits,'nb_d':nb_depots,'pr':pr,'pd':pd})
     else:    
         return redirect('/login')
     
