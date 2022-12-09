@@ -140,12 +140,12 @@ def admin_dashboard(request):
     year = now.strftime('%Y')
     #month = now.strftime('%m')
     clients = Client.objects.filter(created_at__year=year)
-    nb_clients = clients.count
+    nb_clients = clients.count()
     agents = Profil.objects.filter(role_id=3)
-    nb_agents = agents.count
+    nb_agents = agents.count()
     operations = Operation.objects.filter(created_at__year=year)
     retraits = operations.filter(is_deposit=False)
-    nb_retraits = retraits.count
+    nb_retraits = retraits.count()
     pr = 0
     if operations.count() >0:
         pr = nb_retraits*100/operations.count()
@@ -153,10 +153,10 @@ def admin_dashboard(request):
     for r in retraits:
         mt_retraits = mt_retraits+r.montant
     depots = operations.filter(is_deposit=True)
-    nb_depots = depots.count
+    nb_depots = depots.count()
     pd = 0
     if operations.count() >0:
-        pd = nb_depots*100/operations.count()
+        pd = nb_depots * 100/operations.count()
     mt_depots = 0
     for d in depots:
         mt_depots = mt_depots + d.montant
