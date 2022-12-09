@@ -148,7 +148,7 @@ def admin_dashboard(request):
     nb_retraits = retraits.count()
     pr = 0
     if operations.count() >0:
-        pr = nb_retraits*100/operations.count()
+        pr = round(nb_retraits*100/operations.count(),2)
     mt_retraits = 0
     for r in retraits:
         mt_retraits = mt_retraits+r.montant
@@ -156,7 +156,7 @@ def admin_dashboard(request):
     nb_depots = depots.count()
     pd = 0
     if operations.count() >0:
-        pd = nb_depots * 100/operations.count()
+        pd = round(nb_depots * 100/operations.count(),2)
     mt_depots = 0
     for d in depots:
         mt_depots = mt_depots + d.montant
