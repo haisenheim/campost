@@ -17,6 +17,7 @@
                   <p>ADRESSE PHYSIQUE : <span class="text-bold">{{ client.adresse }}</span></p>
                   <p>DATE DE NAISSANCE : <span class="text-bold">{{client.dtn|date:"d-m-Y" }}</span></p>
                   <p>NUMERO DE COMPTE : <span class="text-bold">{{ client.compte.numero }}</span> </p>
+                  <p>SOLDE DU COMPTE : <span class="text-bold">{{ client.compte.solde }}</span> </p>
                 </div>  
               </div>   
             </div>
@@ -40,24 +41,28 @@
                         
                         <th>TYPE</th>
                         <th>MONTANT</th>
+                        <th>AGENCE</th>
+                        <th>AGENT</th>
                       </tr>
                     </thead>
                     <tbody>
-                        {% for st in transactions %}
-                          <tr>
-                            <td><a href="#" class="">{{st.created_at|date:"d-m-Y H:i"}}</a></td>
-                            
-                            {% if st.is_deposit %}
-                              <td><span class="badge badge-success">depot<i class="fa fa-upload" ></i></span></td>
-                            {% else %}
-                            <td><span class="badge badge-danger">retrait<i class="fa fa-download" ></i></span></td>
-                            {% endif %}
-                            <td>{{ st.montant }}</td>
-                          </tr>
-                          {% endfor %}
+                      {% for st in client.operation_set.all %}
+                        <tr>
+                          <td><a href="#" class="">{{st.created_at|date:"d-m-Y H:i"}}</a></td>
                           
-                        </tbody>
-                      </table>
+                          {% if st.is_deposit %}
+                            <td><span class="badge badge-success">depot<i class="fa fa-upload" ></i></span></td>
+                          {% else %}
+                          <td><span class="badge badge-danger">retrait<i class="fa fa-download" ></i></span></td>
+                          {% endif %}
+                          <td>{{ st.montant }}</td>
+                          <td>{{ st.agence.nom }}</td>
+                            <td>{{ st.user.username }}</td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                  </table>
                     </div>  
                   </div>  
                 </div>  

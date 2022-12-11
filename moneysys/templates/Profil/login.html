@@ -23,17 +23,18 @@
         
     
         <h4 class="text-center alert alert-primary">PAGE DE CONNEXION</h2>
-
+            {% include 'includes/flash-message.html' %}
         <div class="text-center">
             <div style="max-width: 400px; margin: 0 auto;">
                 <div>
-                    {% if error %}
-                        <p class="alert alert-warning"><strong>Utilisateur inexistant ou mauvais de mot de passe.</strong></p>
-                        {% endif %}
-        
+                   
                         {% if user.is_authenticated %}
-                        Vous êtes connecté, {{ user.username }} !
+                       <p>Vous êtes, <span style="color: #FFF; font-weight:800; font-size: 1.25rem;">{{ user.username }} !</span> </p>
+                            
+                        <a href="/" class="btn btn-primary"><i class="fa fa-2x fa-home"></i> ACCUEIL</a>
+                            
                         {% else %}
+
                         <form method="post" action="/login">
                             {% csrf_token %}
                             {{ form.as_p }}

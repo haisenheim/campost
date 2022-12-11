@@ -1,7 +1,117 @@
 {% extends 'layouts/receveur.html' %}
 
 {% block content %}
-  <div class="row mb-2">
-        <p>TABLEAU DE BORD</p>
+  <div class="container">
+      <div id="dash" class="row">
+            <div class="col-md-6 col-sm-12 p-2">
+                  <div class="card bg-light">
+                        <div class="card-body text-center">
+                             <div class="v-center">
+                                    <div>
+                                          <h1>{{ clients }}</h1>
+                                          <p>Compte(s) créé(s)</p>
+                                    </div>
+                             </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-md-6 col-sm-12 p-2">
+                  <div class="card bg-info">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                     <div>
+                                           <h1>{{ agents }}</h1>
+                                           <p>Agent(s) </p>
+                                     </div>
+                              </div>
+                         </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2">
+                  <div class="card">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                     <div>
+                                           <h1>{{ nb_r }}</h1>
+                                           <p>Retrait(s) ce mois</p>
+                                     </div>
+                              </div>
+                         </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2 ">
+                  <div class="card bg-light">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                    <div>
+                                          <h3>{{ mr }} FCFA</h3>
+                                          <p>Montant total des retraits du mois</p>
+                                    </div>
+                             </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2 ">
+                  <div class="card bg-danger">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                    <div>
+                                          <h1>{{ pr }} %</h1>
+                                          <p>des retraits sur le total des operations du mois</p>
+                                    </div>
+                             </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2">
+                  <div class="card">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                     <div>
+                                           <h1>{{ nb_d }}</h1>
+                                           <p>Dépot(s) ce mois</p>
+                                     </div>
+                              </div>
+                         </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2 ">
+                  <div class="card bg-light">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                    <div>
+                                          <h3>{{  md }} FCFA</h3>
+                                          <p>Montant total des dépots du mois</p>
+                                    </div>
+                             </div>
+                        </div>
+                  </div>
+            </div>
+            <div class="col-md-4 col-sm-12 p-2 ">
+                  <div class="card bg-success">
+                        <div class="card-body text-center">
+                              <div class="v-center">
+                                    <div>
+                                          <h1>{{ pd }} %</h1>
+                                          <p>des dépots sur le total des operations du mois</p>
+                                    </div>
+                             </div>
+                        </div>
+                  </div>
+            </div>
+      </div>
   </div>
+  <style>
+      #dash div.card-body{
+            min-height: 150px;
+      }
+      .v-center{
+            margin: 0 auto;
+            width: 90%;
+            position: absolute;
+            top: 50%;
+            -ms-transform: translateY(-50%);
+            transform: translateY(-50%);
+      }
+  </style>
   {% endblock content %}

@@ -90,6 +90,22 @@
               </li>
             </ul>
           </li>
+          <li class="nav-item ">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                HISTORIQUE
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="/super/annulations" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>ANNULATIONS</p>
+                </a>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item">
             <a href="/deconnexion" class="nav-link">
               <i class="nav-icon fas fa-arrow-left"></i>
@@ -113,6 +129,7 @@
     <!-- Main content -->
     <section class="content" style="">
         <div class="container-fluid mt-0">
+          {% include 'includes/flash-message.html' %}
           {% block header%}  {% endblock header%}
         </div>
        {% block content%}  {% endblock content%}

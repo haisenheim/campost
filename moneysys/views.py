@@ -9,7 +9,7 @@ import datetime
 from faker import Faker
 import random
 import locale
-
+from django.contrib import messages
 #ClientRegistration,
 #User,
 # Create your views here.
@@ -106,19 +106,24 @@ def login_user(request):
             password = form.cleaned_data["password"]
             user = authenticate(username=username, password=password)  # Nous vérifions si les données sont correctes
             if user:  # Si l'objet renvoyé n'est pas None
-                now = datetime.datetime.now()
-                user.profil.connected_at = now
-                user.profil.save()
-                login(request, user)  # nous connectons l'utilisateur
-                if user.profil.role.id==1:
-                    return redirect('/super/dashboard')
-                if user.profil.role.id==2:
-                    return redirect('/receveur/dashboard')
-                if user.profil.role.id==3:
-                    return redirect('/agent/dashboard')
-                
+                if user.profil.is_active:
+                    now = datetime.datetime.now()
+                    user.profil.connected_at = now
+                    user.profil.save()
+                    login(request, user)  # nous connectons l'utilisateur
+                    if user.profil.role.id==1:
+                        return redirect('/super/dashboard')
+                    if user.profil.role.id==2:
+                        return redirect('/receveur/dashboard')
+                    if user.profil.role.id==3:
+                        return redirect('/agent/dashboard')
+                else:
+                    logout(request)
+                    messages.error(request,'Ce compte été bloqué! Bien vouloir contacter un administrateur!')            
+                    return render(request, 'Profil/login.html', locals())
             else: # sinon une erreur sera affichée
-                error = True
+                #error = True
+                messages.warning(request,'Utilisateur inexistant ou mauvais de mot de passe! Bien vouloir contacter un administrateur pour toute vérification!')
         else:
             return render(request, 'Profil/login.html', locals()) 
                     
@@ -145,7 +150,7 @@ def admin_dashboard(request):
     nb_clients = clients.count()
     agents = Profil.objects.filter(role_id=3)
     nb_agents = agents.count()
-    operations = Operation.objects.filter(created_at__year=year)
+    operations = Operation.objects.filter(is_active=True).filter(created_at__year=year)
     retraits = operations.filter(is_deposit=False)
     nb_retraits = retraits.count()
     pr = 0
@@ -191,6 +196,68 @@ def admin_parametres_agences(request):
         else:    
             return redirect('/login')
     
+def admin_delete_transaction(request,id):
+    operation = Operation.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==1:
+        operation.is_active=False
+        operation.save()
+        compte = operation.compte
+        if operation.is_deposit:
+            compte.solde = compte.solde - operation.montant
+        else:
+             compte.solde = compte.solde + operation.montant
+        compte.save()
+        messages.info(request, "Annulation de l'opération effectuée avec succes !")        
+        return redirect('/super/transactions')
+    else:    
+        return redirect('/login')
+
+def admin_disable_compte(request,id):
+    client = Client.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==1:
+        compte = client.compte
+        compte.is_active = False        
+        compte.save()
+        messages.info(request, "Compte Client bloqué avec succes !")        
+        return redirect('/super/clients')
+    else:    
+        return redirect('/login')
+    
+def admin_enable_compte(request,id):
+    client = Client.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==1:
+        compte = client.compte
+        compte.is_active = True        
+        compte.save()
+        messages.success(request, "Compte Client réactivé avec succes !")        
+        return redirect('/super/clients')
+    else:    
+        return redirect('/login') 
+    
+def admin_disable_user(request,id):
+    user = Profil.objects.get(pk=id)
+    current_user = request.user
+    if (current_user.profil.role.id==1) & (user.id!=current_user.profil.id):
+        user.is_active = False        
+        user.save()
+        messages.info(request, "Compte utilisateur bloqué avec succes !")                       
+        return redirect('/super/parametres/utilisateurs')
+    else:    
+        return redirect('/login')
+    
+def admin_enable_user(request,id):
+    user = Profil.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==1:
+        user.is_active = True        
+        user.save()
+        messages.success(request, "Compte utilisateur réactivé avec succes !")                        
+        return redirect('/super/parametres/utilisateurs')
+    else:    
+        return redirect('/login')           
 
 #Je gere les comptes utilisateurs ici
 def admin_parametres_utilisateurs(request):
@@ -247,10 +314,19 @@ def admin_transactions(request):
     #return redirect('/some/url/')
     user = current_user = request.user
     if current_user.profil.role.id==1:
-        transactions = Operation.objects.all()
+        transactions = Operation.objects.filter(is_active=True).all()
         return render(request, 'Admin/transactions.html',{'transactions':transactions})
     else:    
         return redirect('/login')
+    
+def admin_annulations(request):
+    #return redirect('/some/url/')
+    user = current_user = request.user
+    if current_user.profil.role.id==1:
+        transactions = Operation.objects.filter(is_active=False).all()
+        return render(request, 'Admin/annulations.html',{'transactions':transactions})
+    else:    
+        return redirect('/login')    
     
 
 
@@ -268,18 +344,96 @@ def receveur_utilisateurs(request):
     
 def receveur_dashboard(request):
     current_user = request.user
+    locale.setlocale(locale.LC_ALL, '')
+   # user = current_user = request.user
+    now = datetime.datetime.now()
+    year = now.strftime('%Y')
+    month = now.strftime('%m')
+    clients = Client.objects.filter(created_at__year=year).filter(agence_id=current_user.profil.agence_id)
+    nb_clients = clients.count()
+    agents = Profil.objects.filter(role_id=3).filter(agence_id=current_user.profil.agence_id)
+    nb_agents = agents.count()
+    operations = Operation.objects.filter(created_at__year=year).filter(is_active=True).filter(created_at__month=month).filter(agence_id=current_user.profil.agence_id)
+    retraits = operations.filter(is_deposit=False)
+    nb_retraits = retraits.count()
+    pr = 0
+    if operations.count() >0:
+        pr = round(nb_retraits*100/operations.count(),2)
+    mt_retraits = 0
+    for r in retraits:
+        mt_retraits = mt_retraits+r.montant
+    depots = operations.filter(is_deposit=True)
+    nb_depots = depots.count()
+    pd = 0
+    if operations.count() >0:
+        pd = round(nb_depots * 100/operations.count(),2)
+    mt_depots = 0
+    for d in depots:
+        mt_depots = mt_depots + d.montant
+   # Departure_Date.objects.filter(created_at__year__gte=year,
+    #                          created_at__month__gte=month,
+   #                           created_at__year__lte=year,
+    #                          created_at__month__lte=month)
     if current_user.profil.role.id==2:
-        return render(request, 'Receveur/dashboard.html',locals())
+        return render(request, 'Receveur/dashboard.html',{'clients':nb_clients,'agents':nb_agents,'mr':f'{mt_retraits:n}','md':f'{mt_depots:n}','nb_r':nb_retraits,'nb_d':nb_depots,'pr':pr,'pd':pd})
     else:    
         return redirect('/login')
     
 def receveur_transactions(request):
     current_user = request.user
     if current_user.profil.role.id==2:
-        transactions = Operation.objects.filter(agence=current_user.profil.agence)
+        transactions = Operation.objects.filter(is_active=True).filter(agence=current_user.profil.agence)
         return render(request, 'Receveur/transactions.html',{'transactions':transactions})
     else:    
-        return redirect('/login') 
+        return redirect('/login')
+    
+def receveur_disable_user(request,id):
+    user = Profil.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==2:
+        if (user.agence==current_user.profil.agence) & (user.role.id==3):
+            user.is_active = False        
+            user.save()
+            messages.info(request, "Compte utilisateur bloqué avec succes !")  
+        else:
+            messages.warning(request, "Impossible de bloquer ce compte utilisateur ! Vos droits sont limités sur ce dernier!")                      
+        return redirect('/receveur/utilisateurs')
+    else:    
+        return redirect('/login')
+    
+def receveur_enable_user(request,id):
+    user = Profil.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==2:
+        if (user.agence==current_user.profil.agence) & (user.role.id==3):
+            user.is_active = True        
+            user.save()
+            messages.success(request, "Compte utilisateur reactivé avec succes !")  
+        else:
+            messages.warning(request, "Impossible de bloquer ce compte utilisateur ! Vos droits sont limités sur ce dernier!")                      
+        return redirect('/receveur/utilisateurs')
+    else:    
+        return redirect('/login')     
+    
+def receveur_delete_transaction(request,id):
+    operation = Operation.objects.get(pk=id)
+    current_user = request.user
+    if current_user.profil.role.id==2:
+        if operation.agence==current_user.profil.agence:
+            operation.is_active=False
+            operation.save()
+            compte = operation.compte
+            if operation.is_deposit:
+                compte.solde = compte.solde - operation.montant
+            else:
+                compte.solde = compte.solde + operation.montant
+            compte.save()
+            messages.info(request, "Annulation de l'opération effectuée avec succes !")
+        else:
+            messages.warning(request, "Impossible d'annuler cette opération ! Vos droits sont limités sur cette opération!")            
+        return redirect('/receveur/transactions')
+    else:    
+        return redirect('/login')     
 
 def agent_dashboard(request):
     current_user = request.user
@@ -346,6 +500,7 @@ def agent_depot(request):
             
             compte.solde = compte.solde + int(montant)
             compte.save()
+            messages.success(request, "Opération effectuée avec succes !")
             return redirect('/agent/transactions')
         else: 
            # print("outside profil role id :", current_user.profil.role.id)
@@ -362,9 +517,14 @@ def agent_retrait(request):
         if current_user.profil.role.id==3:
             now = datetime.datetime.now()
             num = '{}{}{}'.format(now.strftime('%H%d%m%y'),current_user.profil.agence.id,current_user.id)
-            transaction = Operation.objects.create(montant=montant,compte=compte,client=compte.client,user=current_user,agence=current_user.profil.agence,is_deposit=False,region=current_user.profil.agence.region,autorisation=num)
-            compte.solde = compte.solde - int(montant)
-            compte.save()
+            mt = int(montant)
+            if mt < compte.solde:
+                transaction = Operation.objects.create(montant=montant,compte=compte,client=compte.client,user=current_user,agence=current_user.profil.agence,is_deposit=False,region=current_user.profil.agence.region,autorisation=num)
+                compte.solde = compte.solde - int(montant)
+                compte.save()
+                messages.success(request, "Retrait effectué avec succes !")
+            else:
+                messages.error(request, "Echec de l'opération! Montant invalide !!!")    
             return redirect('/agent/transactions')
         else:    
             return redirect('/login')                  

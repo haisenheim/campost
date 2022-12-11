@@ -1,7 +1,7 @@
 {% extends 'layouts/admin.html' %}
 {% block header %}
       <div class="p-3 mb-2 bg-light">
-         <h3 class="text-center">HISTORIQUE DES TRANSACTIONS</h3>
+         <h3 class="text-center">HISTORIQUE DES TRANSACTIONS ANNULEES</h3>
       </div>     
 {% endblock header %}
 {% block content %}
@@ -24,7 +24,6 @@
                         <th>MONTANT</th>
                          <th>AGENCE</th>
                         <th>AGENT</th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -41,7 +40,7 @@
                             <td>{{ st.montant }}</td>
                             <td>{{ st.agence.nom }}</td>
                             <td>{{ st.user.username }}</td>
-                            <td><a class="btn btn-xs btn-danger" href="/super/transaction/cancel/{{ st.id }}">Annuler</a></td>
+                           
                           </tr>
                           {% endfor %}
                           

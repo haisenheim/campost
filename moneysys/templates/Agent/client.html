@@ -18,6 +18,13 @@
                   <p>DATE DE NAISSANCE : <span class="text-bold">{{client.dtn|date:"d-m-Y" }}</span></p>
                   <p>NUMERO DE COMPTE : <span class="text-bold">{{ client.compte.numero }}</span> </p>
                   <p>SOLDE DU COMPTE : <span class="text-bold">{{ client.compte.solde }}</span> </p>
+                  <p>
+                    {% if client.compte.is_active %}
+                      <span class="badge badge-success">Compte actif</span>
+                    {% else %}
+                      <span class="badge badge-danger">Compte bloqué</span>
+                    {% endif %}
+                  </p>  
                 </div>  
               </div>   
             </div>
@@ -29,8 +36,10 @@
                         <div class="form-group">
                           <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" aria-expanded="false">Actions </button>
                           <ul class="dropdown-menu" style="">
+                            {% if client.compte.is_active %}
                             <li><a class="dropdown-item" data-target="#retraitModal" data-toggle="modal" href="#">Effectuer retrait</a></li>
                             <li><a class="dropdown-item" data-target="#depotModal" data-toggle="modal" href="#">Effectuer depot</a></li>
+                            {% endif %}
                           </ul>
                         </div>
                         
@@ -65,8 +74,8 @@
                           </tr>
                           {% endfor %}
                           
-                        </tbody>
-                      </table>
+                    </tbody>
+                  </table>
                     </div>  
                   </div>  
                 </div>  

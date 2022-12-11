@@ -85,6 +85,7 @@
     <!-- Main content -->
     <section class="content" style="">
         <div class="container-fluid mt-0">
+          {% include 'includes/flash-message.html' %}
           {% block header%}  {% endblock header%}
         </div>
        {% block content%}  {% endblock content%}

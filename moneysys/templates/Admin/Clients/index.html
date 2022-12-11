@@ -23,6 +23,7 @@
                         <th>CLIENT</th>
                         <th>TELEPHONE</th>
                         <th>STATUT</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -34,10 +35,13 @@
                             <td>{{st}}</td>
                             <td>{{st.telephone}}</td>
                             {% if st.compte.is_active %}
-                              <td><span class="badge badge-success">Actif</span></td>
+                              <td><span class="badge badge-success">actif</span></td>
+                              <td><a class="btn btn-xs btn-danger" href="/super/client/disable/{{ st.id }}"><i class="fa fa-lock"></i> Bloquer</a></td>
                             {% else %}
-                            <td><span class="badge badge-danger">bloque</span></td>
+                            <td><span class="badge badge-danger">bloqué</span></td>
+                            <td><a class="btn btn-xs btn-info" href="/super/client/enable/{{ st.id }}"><i class="fa fa-unlock"></i>Activer</a></td>
                             {% endif %}
+                            
                           </tr>
                           {% endfor %}
                           

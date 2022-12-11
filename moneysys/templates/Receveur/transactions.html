@@ -23,7 +23,9 @@
                         <th>TYPE</th>
                         <th>MONTANT</th>
                         <th>AGENT</th>
+                        <th>STATUT</th>
                         <th></th>
+                        
                       </tr>
                     </thead>
                     <tbody>
@@ -33,12 +35,17 @@
                             <td>{{ st.compte.client }}</td>
                             <td>{{ st.compte }}</td>
                             {% if st.is_deposit %}
-                              <td><span class="badge badge-success">depot<i class="fa fa-upload" ></i></span></td>
+                              <td><span class="badge badge-success">dépot<i class="fa fa-upload" ></i></span></td>
                             {% else %}
                             <td><span class="badge badge-danger">retrait<i class="fa fa-download" ></i></span></td>
                             {% endif %}
                             <td>{{ st.montant }}</td>
                             <td>{{ st.user.username }}</td>
+                            {% if st.is_active %}
+                              <td><span class="badge badge-success">validée</span></td>
+                            {% else %}
+                              <td><span class="badge badge-danger">annulée</span></td>
+                            {% endif %}
                             <td><a class="btn btn-xs btn-danger" href="/receveur/transaction/cancel/{{ st.id }}">Annuler</a></td>
                           </tr>
                           {% endfor %}

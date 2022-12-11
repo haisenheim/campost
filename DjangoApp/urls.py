@@ -38,16 +38,25 @@ urlpatterns = [
     
     # Les liens de l'administrateur
     path('super/dashboard',views.admin_dashboard, name = "admin_dashboard"),
-    path('super/transactions',views.admin_transactions, name = "admin_dashboard"),
+    path('super/transactions',views.admin_transactions, name = "admin_transactions"),
+    path('super/annulations',views.admin_annulations, name = "admin_annulations"),
     path('super/parametres/agences',views.admin_parametres_agences, name = "admin_parametres_agences"),
     path('super/parametres/utilisateurs',views.admin_parametres_utilisateurs, name = "admin_parametres_utilisateurs"),
     path('super/clients',views.admin_clients, name = "admin_clients"),
     path('super/client/show/<int:id>',views.admin_client, name = "admin_client"),
+    path('super/transaction/cancel/<int:id>',views.admin_delete_transaction, name = "admin_delete_transaction"),
+    path('super/client/enable/<int:id>',views.admin_enable_compte, name = "admin_enable_compte"),
+    path('super/client/disable/<int:id>',views.admin_disable_compte, name = "admin_disable_compte"),
+    path('super/user/enable/<int:id>',views.admin_enable_user, name = "admin_enable_user"),
+    path('super/user/disable/<int:id>',views.admin_disable_user, name = "admin_disable_user"),
     
     #Les liens du Receveur
     path('receveur/dashboard',views.receveur_dashboard, name = "receveur_dashboard"),
     path('receveur/utilisateurs',views.receveur_utilisateurs, name = "receveur_parametres_utilisateurs"),
     path('receveur/transactions',views.receveur_transactions, name = "receveur_transactions"),
+    path('receveur/transaction/cancel/<int:id>',views.receveur_delete_transaction, name = "receveur_delete_transaction"),
+    path('receveur/user/enable/<int:id>',views.receveur_enable_user, name = "receveur_enable_user"),
+    path('receveur/user/disable/<int:id>',views.receveur_disable_user, name = "receveur_disable_user"),
     #path('receveur/transactions',views.receveur_transactions, name = "receveur_dashboard"),
     
     #Les liens de l'agent

@@ -82,7 +82,8 @@ class Operation(models.Model):
     updated_at = models.DateTimeField(auto_now=True) 
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     region = models.ForeignKey(Region, null=True, on_delete=models.SET_NULL)
-    agence = models.ForeignKey(Agence, null=True, on_delete=models.SET_NULL)          
+    agence = models.ForeignKey(Agence, null=True, on_delete=models.SET_NULL) 
+    is_active=models.BooleanField(default=True)         
 
 
    

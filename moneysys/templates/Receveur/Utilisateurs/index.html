@@ -21,6 +21,8 @@
                         <th scope="col">Nom</th>
                         <th>Role</th>
                         <th>connecté(e) à</th>
+                        <th>Statut</th>
+                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
@@ -30,6 +32,13 @@
                            
                             <td>{{st.role.nom}}</td>
                             <td>{{st.connected_at|date:"d-m-Y H:i"}}</td>
+                            {% if st.is_active %}
+                              <td><span class="badge badge-success">actif</span></td>
+                              <td><a class="btn btn-xs btn-danger" href="/receveur/user/disable/{{ st.id }}"><i class="fa fa-lock"></i> Bloquer</a></td>
+                            {% else %}
+                            <td><span class="badge badge-danger">bloqué</span></td>
+                            <td><a class="btn btn-xs btn-info" href="/receveur/user/enable/{{ st.id }}"><i class="fa fa-unlock"></i>Activer</a></td>
+                            {% endif %}
                           </tr>
                           {% endfor %}
                           
