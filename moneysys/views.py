@@ -10,6 +10,7 @@ from faker import Faker
 import random
 import locale
 from django.contrib import messages
+from django.core.exceptions import ObjectDoesNotExist
 #ClientRegistration,
 #User,
 # Create your views here.
@@ -482,11 +483,9 @@ def agent_client(request):
             current_user = request.user
             if current_user.profil.role.id==3:
                 return render(request, 'Agent/client.html',{'client':compte.client})
-        except compte.DoesNotExist:
+        except ObjectDoesNotExist:
             messages.warning(request,'Attention! numero de compte inexistant!')
             return HttpResponseRedirect(request.path_info)
-        
-        
     else:    
         return redirect('/login')
 
