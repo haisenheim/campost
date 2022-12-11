@@ -477,10 +477,16 @@ def agent_client(request):
     form = ClientSearch(request.POST)
     if form.is_valid():
         numero = form.cleaned_data["numero"]
-        compte = Compte.objects.get(numero=numero)
-        current_user = request.user
-        if current_user.profil.role.id==3:
-            return render(request, 'Agent/client.html',{'client':compte.client})
+        try:
+            compte = Compte.objects.get(numero=numero)
+            current_user = request.user
+            if current_user.profil.role.id==3:
+                return render(request, 'Agent/client.html',{'client':compte.client})
+        except compte.DoesNotExist:
+            messages.warning(request,'Attention! numero de compte inexistant!')
+            return HttpResponseRedirect(request.path_info)
+        
+        
     else:    
         return redirect('/login')
 
