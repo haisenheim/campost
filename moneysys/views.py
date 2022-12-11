@@ -11,6 +11,7 @@ import random
 import locale
 from django.contrib import messages
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.files.storage import FileSystemStorage
 #ClientRegistration,
 #User,
 # Create your views here.
@@ -462,14 +463,19 @@ def agent_create_client(request):
             adresse = form.cleaned_data["adresse"]
             dtn = form.data.get("dtn")
             lieu = form.data.get("lieu")
-            photo = form.data.get("photo")
+            #photo = form.data.get("photo")
             current_user = request.user
             agence = current_user.profil.agence
             now = datetime.datetime.now()
             faker = Faker()
-            #numero = faker.unique
             numero = '{}{}{}'.format(now.strftime('%H%w%W%y%M%S'), f'{current_user.id:03}',random.randint(0, 9))
-            client = Client.objects.create(nom=nom,prenom=prenom,telephone=telephone,adresse=adresse,dtn=dtn,lieu=lieu,photo=photo,user=current_user,agence=agence)
+            #numero = faker.unique
+            upload = request.FILES['upload']
+            fss = FileSystemStorage()
+            file = fss.save(numero, upload)
+            file_url = fss.url(file)
+            numero = '{}{}{}'.format(now.strftime('%H%w%W%y%M%S'), f'{current_user.id:03}',random.randint(0, 9))
+            client = Client.objects.create(nom=nom,prenom=prenom,telephone=telephone,adresse=adresse,dtn=dtn,lieu=lieu,photo=file_url,user=current_user,agence=agence)
             compte = Compte.objects.create(client=client,solde=0,numero=numero)
             cr_date = datetime.datetime.strptime(client.dtn, '%Y-%m-%d')
             dtn = cr_date.strftime("%d-%m-%Y")

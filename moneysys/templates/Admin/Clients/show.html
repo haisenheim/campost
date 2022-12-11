@@ -5,12 +5,27 @@
       </div>     
 {% endblock header %}
 {% block content %}
+{% load static %}
   <div class="container">
       <div class="row">
             <div class="col-md-4 col-sm-12">
               <div class="card">
+                <div class="card-header">
+                  <div class="text-center">
+                    {% if client.photo %}
+                      <div class="">
+                        <img src="{{ client.photo }}" width="120" height="120" class="img-circle">
+                      </div>
+                    {% else %}
+                    <div class="">
+                      <img src="{% static 'assets/img/avatar.png' %}" width="120" height="120" class="img-circle">
+                    </div>
+                    {% endif %}
+                    <h6 class="text-center ">{{ client }} </h6>
+                  </div>
+                </div>
                 <div class="card-body">
-                  <h4 class="text-center alert alert alert-info ">{{ client }} </h4>
+                 
                   <p>NOM : <span class="text-bold">{{ client.nom }}</span></p>
                   <p>PRENOM : <span class="text-bold">{{ client.prenom }}</span></p>
                   <p>TELEPHONE : <span class="text-bold">{{ client.telephone }}</span></p>

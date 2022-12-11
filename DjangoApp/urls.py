@@ -66,7 +66,6 @@ urlpatterns = [
     path('agent/client/search',views.agent_client, name = "agent_client"),
     path('agent/depot',views.agent_depot, name = "agent_depot"),
     path('agent/retrait',views.agent_retrait, name = "agent_retrait"),
-]   
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL,
-                          document_root=settings.MEDIA_ROOT)
+]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT) #has been added 
+#if settings.DEBUG:
+#    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
