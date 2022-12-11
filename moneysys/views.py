@@ -472,7 +472,7 @@ def agent_create_client(request):
             client = Client.objects.create(nom=nom,prenom=prenom,telephone=telephone,adresse=adresse,dtn=dtn,lieu=lieu,photo=photo,user=current_user,agence=agence)
             compte = Compte.objects.create(client=client,solde=0,numero=numero)
             return render(request, 'Agent/client.html',{'client':client})
-        return HttpResponseRedirect(request.path_info)   
+        return redirect('/agent/dashboard')  
  
 def agent_client(request):
     form = ClientSearch(request.POST)
@@ -485,7 +485,7 @@ def agent_client(request):
                 return render(request, 'Agent/client.html',{'client':compte.client})
         except ObjectDoesNotExist:
             messages.warning(request,'Attention! numero de compte inexistant!')
-            return HttpResponseRedirect(request.path_info)
+            return redirect('/agent/transactions')
     else:    
         return redirect('/login')
 
