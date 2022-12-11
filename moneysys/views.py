@@ -471,7 +471,9 @@ def agent_create_client(request):
             numero = '{}{}{}'.format(now.strftime('%H%w%W%y%M%S'), f'{current_user.id:03}',random.randint(0, 9))
             client = Client.objects.create(nom=nom,prenom=prenom,telephone=telephone,adresse=adresse,dtn=dtn,lieu=lieu,photo=photo,user=current_user,agence=agence)
             compte = Compte.objects.create(client=client,solde=0,numero=numero)
-            return render(request, 'Agent/client.html',{'client':client})
+            cr_date = datetime.datetime.strptime(client.dtn, '%Y-%m-%d')
+            dtn = cr_date.strftime("%d-%m-%Y")
+            return render(request, 'Agent/client.html',{'client':client,'dtn':dtn})
         return redirect('/agent/dashboard')  
  
 def agent_client(request):
@@ -482,7 +484,9 @@ def agent_client(request):
             compte = Compte.objects.get(numero=numero)
             current_user = request.user
             if current_user.profil.role.id==3:
-                return render(request, 'Agent/client.html',{'client':compte.client})
+                
+                dtn = compte.client.dtn.strftime("%d-%m-%Y")
+                return render(request, 'Agent/client.html',{'client':compte.client,'dtn':dtn})
         except ObjectDoesNotExist:
             messages.warning(request,'Attention! numero de compte inexistant!')
             return redirect('/agent/transactions')
